@@ -51,23 +51,26 @@
  	if (repo->ops->open(repo, R_OK|W_OK) != EPKG_OK) {
  		pkg_debug(1, "PkgRepo: need forced update of %s", pkg_repo_name(repo));
  		t = 0;
-@@ -627,6 +629,15 @@ pkg_repo_binary_update(struct pkg_repo *repo, bool for
+@@ -627,6 +629,18 @@ pkg_repo_binary_update(struct pkg_repo *repo, bool for
  		}
  	}
  
 +	xasprintf(&lockpath, "%s-lock", filepath);
 +	ld = open(lockpath, O_CREAT|O_TRUNC|O_WRONLY, 00644);
 +	if (flock(ld, LOCK_EX|LOCK_NB) == -1) {
-+		pkg_emit_notice("Another process is updating repository %s",
-+			repo->name);
-+		res = EPKG_FATAL;
++		/* lock blocking anyway to let the other end finish */
++		pkg_emit_notice("Waiting for another process to "
++		    "update repository %s", repo->name);
++		flock(ld, LOCK_EX);
++		res = EPKG_OK;
++		t = 0;
 +		goto cleanup;
 +	}
 +
  	res = pkg_repo_binary_update_proceed(filepath, repo, &t, force);
  	if (res != EPKG_OK && res != EPKG_UPTODATE) {
  		pkg_emit_notice("Unable to update repository %s", repo->name);
-@@ -640,6 +651,16 @@ pkg_repo_binary_update(struct pkg_repo *repo, bool for
+@@ -640,6 +654,16 @@ pkg_repo_binary_update(struct pkg_repo *repo, bool for
  	}
  
  cleanup:
