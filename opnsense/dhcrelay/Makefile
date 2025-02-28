@@ -4,7 +4,7 @@ CATEGORIES=	net
 
 MAINTAINER=	franco@opnsense.org
 COMMENT=	OpenBSD dhcrelay daemons
-WWW=		https://github.com/opnsense/dhcrelay
+WWW=		https://github.com/yetitecnologia/dhcrelay
 
 LICENSE=	BSD3CLAUSE
 

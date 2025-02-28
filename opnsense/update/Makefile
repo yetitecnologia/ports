@@ -5,7 +5,7 @@ PKGNAMEPREFIX=	${GH_ACCOUNT}-
 
 MAINTAINER=	franco@opnsense.org
 COMMENT=	OPNsense update utilities
-WWW=		https://github.com/opnsense/update
+WWW=		https://github.com/yetitecnologia/update
 
 LICENSE=	BSD2CLAUSE
 
